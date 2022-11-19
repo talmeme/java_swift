@@ -56,7 +56,7 @@ open class UnavailableEnum: JavaEnum {
 extension Throwable: Error {
 }
 
-open class JNIObject: JNIObjectProtocol, JNIObjectInit {
+open class JNIObject: JNIObjectProtocol, JNIObjectInit, @unchecked Sendable {
 
     private var _javaObject: jobject?
 

@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:5.7
 
 //
 //  Package.swift
@@ -21,7 +21,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/PureSwift/CJavaVM.git",
-            .branch("master")
+            branch: "master"
         ),
     ],
     targets: [
