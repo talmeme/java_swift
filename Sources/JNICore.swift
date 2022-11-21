@@ -11,7 +11,9 @@
 
 import Foundation
 import Dispatch
-
+#if canImport(Glibc)
+import Glibc
+#endif
 @_exported import CJavaVM
 
 @_silgen_name("JNI_OnLoad")
