@@ -78,6 +78,8 @@ open class JNICore {
     open var jvm: UnsafeMutablePointer<JavaVM?>?
     open var api: JNINativeInterface_!
     open var classLoader: jobject?
+    
+    open var threadKey: pthread_t { return pthread_self() }
 
     static var envVarKey: pthread_key_t = {
         var envVarKey: pthread_key_t = 0
