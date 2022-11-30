@@ -59,9 +59,15 @@ fileprivate class FatalErrorMessage {
     }
 }
 
+#if os(Android)
+public func JNI_DetachCurrentThread(_ ptr: UnsafeMutableRawPointer?) {
+    _ = JNI.jvm?.pointee?.pointee.DetachCurrentThread( JNI.jvm )
+}
+#else
 public func JNI_DetachCurrentThread(_ ptr: UnsafeMutableRawPointer) {
     _ = JNI.jvm?.pointee?.pointee.DetachCurrentThread( JNI.jvm )
 }
+#endif
 
 public func JNI_RemoveFatalMessage(_ ptr: UnsafeMutableRawPointer?) {
     if let ptr = ptr {
