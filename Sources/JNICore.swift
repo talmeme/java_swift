@@ -365,7 +365,7 @@ open class JNICore {
         let ptr = Unmanaged.passRetained(fatalError).toOpaque()
         let error = pthread_setspecific(jniFatalMessage, ptr)
         if error != 0 {
-            NSLog("Can't save fatal message to pthread_setspecific")
+            errorLogger("Can't save fatal message to pthread_setspecific")
         }
     }
 
