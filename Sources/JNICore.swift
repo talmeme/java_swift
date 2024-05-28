@@ -16,37 +16,6 @@ import Glibc
 #endif
 @_exported import CJavaVM
 
-@_silgen_name("JNI_OnLoad")
-public func JNI_OnLoad( jvm: UnsafeMutablePointer<JavaVM?>, ptr: UnsafeRawPointer ) -> jint {
-    JNI.jvm = jvm
-    let env: UnsafeMutablePointer<JNIEnv?>? = JNI.GetEnv()
-    JNI.api = env!.pointee!.pointee
-
-    var result = withUnsafeMutablePointer(to: &jniEnvKey, {
-        pthread_key_create($0, JNI_DetachCurrentThread)
-    })
-    if (result != 0) {
-        fatalError("Can't pthread_key_create")
-    }
-    pthread_setspecific(jniEnvKey, env)
-
-    result = withUnsafeMutablePointer(to: &jniFatalMessage, {
-        pthread_key_create($0, JNI_DetachCurrentThread)
-    })
-    if (result != 0) {
-        fatalError("Can't pthread_key_create")
-    }
-    pthread_setspecific(jniFatalMessage, env)
-    
-    // Save ContextClassLoader for FindClass usage
-    // When a thread is attached to the VM, the context class loader is the bootstrap loader.
-    // https://docs.oracle.com/javase/1.5.0/docs/guide/jni/spec/invocation.html
-    // https://developer.android.com/training/articles/perf-jni.html#faq_FindClass
-    JNI.classLoader = JavaThread.currentThread().getContextClassLoader().withJavaObject { JNI.api.NewGlobalRef( env, $0 ) }
-
-    return jint(JNI_VERSION_1_6)
-}
-
 fileprivate class FatalErrorMessage {
     let description: String
     let file: String
